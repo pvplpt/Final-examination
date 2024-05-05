@@ -6,7 +6,7 @@
 <head>
   <link rel="shortcut icon" href="{% static 'main/favicon.ico' %}" type="image/x-icon">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Главная{% endblock %} - Сайт рецептов</title>
   {% bootstrap_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
@@ -21,22 +21,27 @@
 
     <ul class="col nav justify-content-end border">
       <li class="nav-item"><a class="nav-link" href="{% url 'main:other' page='about' %}">О сайте</a></li>
-      <li class="nav-item"><a class="nav-link" hrеf="#">Регистрация</a>
-      </li>
+      <li class="nav-item"><a class="nav-link" hrеf="#">Регистрация</a></li>
+      {% if user.is_authenticated %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
           aria-expanded="false">Пpoфиль</a>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Moи рецепты</a>
-          <a class="dropdown-item" hrеf="#">Изменить личные данные</a>
-          <a class="dropdown-item" hrеf="#">Изменить пароль</a>
+          <a class="dropdown-item" href="{% url 'main:profile' %}">Moи рецепты</a>
+          <a class="dropdown-item" href="{% url 'main:profile_change' %}">Изменить личные данные</a>
+          <a class="dropdown-item" href="{% url 'main:password_change' %}">Изменить пароль</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" hrеf="#">Выйти</a>
+          <form action="{% url 'main:logout' %}" method="post">
+            {% csrf_token %}
+            <button class="dropdown-item" type="submit">Выйти</button>
+          </form>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" hrеf="#">Удалить</a>
         </div>
       </li>
-      <li class="nav-item"><a class="nav-link" href="#">Bxoд</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'main:login' %}">Bxoд</a></li>
+      {% endif %}
     </ul>
   </div>
   <section class="border ру-2">
