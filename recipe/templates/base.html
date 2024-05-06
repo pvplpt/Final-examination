@@ -21,7 +21,7 @@
 
     <ul class="col nav justify-content-end border">
       <li class="nav-item"><a class="nav-link" href="{% url 'main:other' page='about' %}">О сайте</a></li>
-      <li class="nav-item"><a class="nav-link" hrеf="#">Регистрация</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'main:register' %}">Регистрация</a></li>
       {% if user.is_authenticated %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -36,7 +36,7 @@
             <button class="dropdown-item" type="submit">Выйти</button>
           </form>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" hrеf="#">Удалить</a>
+          <a class="dropdown-item" href="{% url 'main:profile_delete' %}">Удалить</a>
         </div>
       </li>
       {% else %}
