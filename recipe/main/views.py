@@ -23,6 +23,9 @@ class RSLogoutView(LoginRequiredMixin, LogoutView):
 class RSLoginView(LoginView):
     template_name = 'main/login.html'
 
+def by_category(request, pk):
+    pass
+
 def other_page(request,page):
     try:
         template = get_template('main/' + page + '.html')
@@ -85,3 +88,4 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
         if not queryset:
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
+

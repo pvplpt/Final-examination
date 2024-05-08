@@ -20,8 +20,16 @@
   <div class="row">
 
     <ul class="col nav justify-content-end border">
-      <li class="nav-item"><a class="nav-link" href="{% url 'main:other' page='about' %}">О сайте</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'main:register' %}">Регистрация</a></li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+          aria-expanded="false">Категория</a>
+        <div class="dropdown-menu">
+          {% for category in categories %}
+          <a class="dropdown-item" href="{% url 'main:by_category' pk=category.pk %}">{{ category.name }}</a>
+          {% endfor %}
+        </div>
+      </li>
       {% if user.is_authenticated %}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
@@ -42,6 +50,8 @@
       {% else %}
       <li class="nav-item"><a class="nav-link" href="{% url 'main:login' %}">Bxoд</a></li>
       {% endif %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'main:register' %}">Регистрация</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'main:other' page='about' %}">О сайте</a></li>
     </ul>
   </div>
   <section class="border ру-2">
