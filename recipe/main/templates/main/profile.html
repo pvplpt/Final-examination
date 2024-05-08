@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% load thumbnail %}
+{% load static %}
+{% load bootstrap4 %}
 {% block title %}Профиль пользователя{% endblock %}
 {% block content %}
 <h2>Профиль пользователя {{ user.username }}</h2>
@@ -9,4 +11,30 @@
 <p>Здравствуйте!</p>
 {% endif %}
 <h3>Ваши рецепты</h3>
+{% if rss %}
+<ul class="list-unstyled">
+    {% for rs in rss %}
+    <li class="media my-5 p-3 border">
+        {% url 'main:profile_rs_detail' pk=rs.pk as url %}
+        <a href="{{ url }}">
+            {% if rs.image %}
+            <img class="mr-3" src="{% thumbnail rs.image 'default' %}">
+            {% else %}
+            <img class="mr-3" src="{% static 'main/empty.jpg' %}">
+            {% endif %}
+        </a>
+        <div>
+            <h3><a href="{{ url }}">{{ rs.title }}</a></h3>
+            <div>{{ rs.description }}</div>
+            <p class="font-weight-bold">Время приготовления: {{ rs.cooking_time }} мин.</p>
+            <p class="text-right mt-2">
+                <a href="{% url 'main:profile_rs_change' pk=rs.pk %}">Изменить</a>
+                <a href="{% url 'main:profile_rs_delete' pk=rs.pk %}">Удалить</a>
+            </p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<p><a href="{% url 'main:profile_rs_add' %}">Добавить рецепт</a></p>
 {% endblock %}

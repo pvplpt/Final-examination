@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
-from .models import AdvUser
+from .models import AdvUser, Rs
 
 
 class ChangeUserInfoForm(forms.ModelForm):
@@ -41,3 +41,12 @@ class RegisterUserForm(forms.ModelForm):
     class Meta:
         model = AdvUser
         fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'send_messages')
+
+class SearchForm(forms.Form):
+    keyword = forms.CharField(required=False, max_length=20, label='')
+
+class RsForm(forms.ModelForm):
+    class Meta:
+        model = Rs
+        fields = '__all__'
+        widgets = {'author': forms.HiddenInput}

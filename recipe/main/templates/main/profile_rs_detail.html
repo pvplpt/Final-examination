@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ rs.title }} - {{ rs.category.name }}{% endblock %}
+{% block content %}
+<div class="container-fluid mt-3">
+    <div class="row">
+        {% if rs.image %}
+        <div class="col-md-auto">
+            <img class="main-image" src="{{ rs.image.url}}">
+        </div>
+        {% endif %}
+        <div class="col">
+            <h2>{{ rs.title }}</h2>
+            <p>{{ rs.description }}</p>
+            <p>{{ rs.cooking_steps }}</p>
+            <p class="font-weight-bold">{{ rs.cooking_time }} мин.</p>
+            <p class="text-right font-italic">Добавлено {{ rs.created_at }}</p>
+        </div>
+    </div>
+</div>
+<p><a href="{% url 'main:profile' %}">Назад</a></p>
+{% endblock %}
