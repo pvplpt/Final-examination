@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ rs.title }} - {{ rs.category.name }}{% endblock %}
 {% block content %}
 <div class="container-fluid mt-3">
@@ -9,6 +10,7 @@
         </div>
         {% endif %}
         <div class="col">
+            <h4><a href="{% url 'main:by_category' pk=rs.category.pk %}">{{ rs.category.name }}</a></h4>
             <h2>{{ rs.title }}</h2>
             <p>{{ rs.description }}</p>
             <p>{{ rs.cooking_steps }}</p>
@@ -17,5 +19,5 @@
         </div>
     </div>
 </div>
-<p><a href="{% url 'main:by_category' pk=rs.category.pk %}{{ all }}">Назад</a></p>
+<p><a href="{% url 'main:all_recipes' %}{{ all }}">Назад</a></p>
 {% endblock %}

@@ -2,17 +2,23 @@
 {% load thumbnail %}
 {% load static %}
 {% load bootstrap4 %}
+{% block title %}Все рецепты{% endblock %}
 {% block content %}
-{% if no_random %}
-<h2>5 последних рецептов</h2>
-{% else %}
-<h2>5 случайных рецептов</h2>
-{% endif %}
+<h2 class="mb-2">Все рецепты</h2>
+<div class="container-fluid mb-2">
+    <div class="row">
+        <div class="col">&nbsp;</div>
+        <form class="col-md-auto form-inline">
+            {% bootstrap_form form show_label=False %}
+            {% bootstrap_button content='Искать' button_type='submit' %}
+        </form>
+    </div>
+</div>
 {% if rss %}
 <ul class="list-unstyled">
     {% for rs in rss %}
     <li class="media my-5 p-3 border">
-        {% url 'main:detail' category_pk=rs.category.pk pk=rs.pk as url %}
+        {% url 'main:all_recipes_detail' pk=rs.pk as url %}
         <a href="{{ url }}{{ all }}">
             {% if rs.image %}
             <img class="mr-3" src="{% thumbnail rs.image 'default' %}">
@@ -24,11 +30,11 @@
             <h4><a href="{% url 'main:by_category' pk=rs.category.pk %}">{{ rs.category.name }}</a></h4>
             <h3><a href="{{ url }}{{ all }}">{{ rs.title }}</a></h3>
             <div>{{ rs.description }}</div>
-            <p class="font-weight-bold">Время приготовления: {{ rs.cooking_time }} мин.</p>
+            <p class="text-right font-weight-bold">{{ rs.cooking_time }} мин.</p>
         </div>
     </li>
     {% endfor %}
 </ul>
+{% bootstrap_pagination page url=keyword %}
 {% endif %}
-
 {% endblock %}

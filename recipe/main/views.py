@@ -54,8 +54,16 @@ def other_page(request,page):
     return HttpResponse(template.render(request=request))
 
 def index(request):
-    rss = Rs.objects.all()[:5]
-    context = {'rss': rss}
+    no_random = False
+    rss = []
+    if request.user.is_authenticated:
+        adv_user = AdvUser.objects.get(pk=request.user.pk)
+        no_random = adv_user.send_messages
+    if no_random:
+        rss = Rs.objects.all()[:5]
+    else:
+        rss = Rs.objects.all().order_by('?')[:5]
+    context = {'rss': rss, 'no_random': no_random}
     return render(request,'main/index.html', context)
 
 @login_required
@@ -105,7 +113,7 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
     
     def post(self,request, *args, **kwargs):
         logout(request)
-        messages.add_message(request, messages.SUCCESS, 'Ползователь удален')
+        messages.add_message(request, messages.SUCCESS, 'Пользователь удален')
         return super().post(request, *args, **kwargs)
     
     def get_object(self, queryset=None):
@@ -161,3 +169,26 @@ def profile_rs_delete(request, pk):
     else:
         context = {'rs': rs}
         return render(request, 'main/profile_rs_delete.html', context) 
+
+def all_recipes(request):
+    rss = Rs.objects.all()
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        q = Q(title__icontains=keyword) | Q(description__icontains=keyword)
+        rss = rss.filter(q)
+    else:
+        keyword = ''
+    form = SearchForm(initial={'keyword':keyword})
+    paginator = Paginator(rss, 5)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {'page': page, 'rss': page.object_list, 'form': form}
+    return render(request, 'main/all_recipes.html', context)
+
+def all_recipes_detail(request, pk):
+    rs = get_object_or_404(Rs, pk=pk)
+    context = {'rs': rs}
+    return render(request, 'main/all_recipes_detail.html', context)

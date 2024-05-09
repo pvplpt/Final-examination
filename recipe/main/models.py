@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from .utilities import get_timestamp_path
 
 class AdvUser(AbstractUser):
-    send_messages = models.BooleanField(default=False, verbose_name='Слать оповещения о новых рецептах?')
+    send_messages = models.BooleanField(default=False, verbose_name='Следить за новыми рецептами?')
 
     def delete(self, *args, **kwargs):
         for rs in self.rs_set.all():
@@ -33,9 +33,10 @@ class Rs(models.Model):
     cooking_time = models.PositiveIntegerField(default=1, verbose_name='Время приготовления')
     image = models.ImageField(blank=True, upload_to=get_timestamp_path, verbose_name='Изображение')
     author = models.ForeignKey(AdvUser, on_delete=models.CASCADE, verbose_name='Автор рецепта')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Добавлено')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Добавлено')
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+        ordering = ['-created_at']
 

@@ -2,7 +2,8 @@ from django.urls import path
 from .views import index, other_page, RSLoginView, profile, RSLogoutView
 from .views import ChangeUserInfoView, RSPasswordChangeView, detail, profile_rs_detail
 from .views import RegisterUserView, RegisterDoneView, DeleteUserView, by_category
-from .views import profile_rs_add, profile_rs_change, profile_rs_delete
+from .views import profile_rs_add, profile_rs_change, profile_rs_delete, all_recipes
+from .views import all_recipes_detail
 
 app_name = 'main'
 urlpatterns = [
@@ -18,6 +19,8 @@ urlpatterns = [
     path('accounts/profile/<int:pk>/', profile_rs_detail, name='profile_rs_detail'),
     path('accounts/profile/', profile, name='profile'),
     path('accounts/login/', RSLoginView.as_view(), name='login'),
+    path('all_recipes/<int:pk>/', all_recipes_detail, name='all_recipes_detail'),
+    path('all_recipes/', all_recipes, name='all_recipes'),
     path('<int:category_pk>/<int:pk>/', detail, name='detail'),
     path('<int:pk>/', by_category, name='by_category'),
     path('<str:page>/', other_page, name='other'),

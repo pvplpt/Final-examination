@@ -15,7 +15,9 @@
 
 <body class="container-fluid">
   <header class="mb-4">
-    <h1 class="display-1 text-center">Рецепты</h1>
+    <h1 class="display-1 text-center">
+      <a class="nav-link" href="{% url 'main:all_recipes' %}">Рецепты</a>
+    </h1>
   </header>
   <div class="row">
 
@@ -61,7 +63,7 @@
     {% endblock %}
   </section>
   <footer class="mt-3">
-    <p class="text-right font-italic">&copy; Павел Поздняков.</p>
+    <p class="text-right font-italic">&copy;2024 Павел Поздняков.</p>
   </footer>
 </body>
 
