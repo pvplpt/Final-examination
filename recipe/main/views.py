@@ -36,7 +36,7 @@ def by_category(request, pk):
     else:
         keyword = ''
     form = SearchForm(initial={'keyword':keyword})
-    paginator = Paginator(rss, 2)
+    paginator = Paginator(rss, 5)
     if 'page' in request.GET:
         page_num = request.GET['page']
     else:

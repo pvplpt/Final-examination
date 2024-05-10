@@ -429,5 +429,181 @@ mysqlclient
 - Отпраил код в удаленный репозиторий
 
 ```
+git add .
+git commit -m "added readiness for copying to the site"
+git push
+```
 
+- Открыл косноль Bash на сайте https://www.pythonanywhere.com и клонировал репозиторий с гитхаба:
+
+```
+git clone https://github.com/pvplpt/Final-examination.git
+```
+
+- Запустил команду создания виртуального окружения:
+
+```
+mkvirtualenv --python=/usr/bin/python3.10 virtualenv
+```
+
+- Перешел в папку с проектом:
+
+```
+cd Final-examination/recipe/
+```
+
+- Установил необходимые пакеты:
+
+```
+pip install -r requirements.txt
+```
+
+- Создал новое веб-прилодение копкой Add a new web app на вкладке Web:
+
+1. Подтвердил доменное имя для бесплатного профиля кнопкой Next
+2. Выбрал пункт Manual configuration (including virtualenvs)
+3. Выбираем последнюю из доступных версий Python 3.10
+4. Подтвердил выбор очередным нажатием Next
+5. All done! Your web app is now set up. Details below.
+
+- Настроил в разделе Virtualenv путь до созданного окружения:
+
+```
+/home/pvplpt/.virtualenvs/virtualenv
+```
+
+- Настроил в разделе Code путь Source code и Working directory
+
+```
+Source code: /home/pvplpt/Final-examination/recipe
+Working directory: /home/pvplpt/Final-examination/recipe
+```
+
+- Отредактировал файл /var/www/pvplpt_pythonanywhere_com_wsgi.py
+
+```
+# +++++++++++ DJANGO +++++++++++
+# To use your own django app use code like this:
+import os
+import sys
+
+from dotenv import load_dotenv
+
+project_folder = os.path.expanduser('~/Final-examination/recipe')
+load_dotenv(os.path.join(project_folder, '.env'))
+
+## assuming your django settings file is at '/home/pvplpt/mysite/mysite/settings.py'
+## and your manage.py is is at '/home/pvplpt/mysite/manage.py'
+path = '/home/pvplpt/Final-examination/recipe'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'recipe.settings'
+
+## then:
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+```
+
+- Сгенерировал токен в консоли
+
+```
+python
+>>> import secrets
+>>> secrets.token_hex()
+>>> exit()
+```
+
+- Добавил токен в скрытый файл .evn Вместо звездочек вставил сгенерированный токен
+
+```
+echo "export SECRET_KEY=****************************************************************" >> .env
+```
+
+- Добавил пароль в скрытый файл .evn Вместо звездочек вставил пароль к MySQL
+
+```
+echo "export MYSQL_PASSWORD=***************" >> .env
+```
+
+- Научил консоль работать с "секретами":
+
+```
+echo 'set -a; source ~/Final-examination/recipe/.env; set +a' >> ~/.virtualenvs/virtualenv/bin/postactivate
+```
+
+- Настроил папку static и media в разделе Static files:
+
+```
+URL 	    Directory
+/static/ 	/home/pvplpt/Final-examination/recipe/static
+/media/ 	/home/pvplpt/Final-examination/recipe/media
+```
+
+- Отключил статику в файле проекта _urls.py_
+
+```
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+- Перезапустил консоль
+- Выполнил миграции:
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+- Собрал статические файлы проекта и приложений в одном месте
+
+```
+python manage.py collectstatic
+```
+
+- Создал суперпользователя:
+
+```
+python3 manage.py createsuperuser
+```
+
+- Перезапустил сервер
+
+- Зашел в админку https://pvplpt.pythonanywhere.com/admin/
+
+- Создал категории рецептов:
+
+```
+Вторые блюда	0
+Выпечка	0
+Закуски	0
+Мясо	0
+Напитки	0
+Пицца	0
+Рыба	0
+Салаты	0
+Супы	0
+Суши	0
+Другие  1
+```
+
+- Зашел на сайт создал первый рецепт с фото
+
+- Изменил количество записей в части пагинатора категорый рецептов с 2 до 5 в контроллере by_category
+
+```
+. . .
+    paginator = Paginator(rss, 5)
+. . .
+```
+
+- Добавил еще 4 рецепта без фото
+- скопировал этот файл на сайт в папку с проектом
+- Сохранил последние изменения на гитхаб
+
+```
+git add .
+git commit -m "added the latest changes from the site"
+git push
 ```
