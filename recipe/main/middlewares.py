@@ -8,7 +8,7 @@ def srecipe_context_processor(request):
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
         if keyword:
-            context['keyword'] = '?keyword' + keyword
+            context['keyword'] = '?keyword=' + keyword
             context['all'] = context['keyword']
     if 'page' in request.GET:
         page = request.GET['page']

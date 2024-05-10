@@ -30,7 +30,7 @@ class Rs(models.Model):
     title = models.CharField(max_length=40, verbose_name='Название')
     description = models.TextField(default='', verbose_name='Описание')
     cooking_steps = models.TextField(blank=True,default='', verbose_name='Шаги приготовления')
-    cooking_time = models.PositiveIntegerField(default=1, verbose_name='Время приготовления')
+    cooking_time = models.PositiveIntegerField(default=1, verbose_name='Время приготовления в минутах')
     image = models.ImageField(blank=True, upload_to=get_timestamp_path, verbose_name='Изображение')
     author = models.ForeignKey(AdvUser, on_delete=models.CASCADE, verbose_name='Автор рецепта')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Добавлено')

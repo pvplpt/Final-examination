@@ -21,12 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l-_fa!c780%(6%o0bx)-0mh#2u%vuj@gs8btpqp@#!sr+$qdo9'
+#SECRET_KEY = 'django-insecure-l-_fa!c780%(6%o0bx)-0mh#2u%vuj@gs8btpqp@#!sr+$qdo9'
+SECRET_KEY = os.getenv('SECRET_KEY')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.5',]
+ALLOWED_HOSTS = ['pvplpt.pythonanywhere.com',]
 
 
 # Application definition
@@ -81,8 +84,15 @@ WSGI_APPLICATION = 'recipe.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pvplpt$default',
+        'USER': 'pvplpt',
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': 'pvplpt.mysql.pythonanywhere-services.com',
+        'OPTIONS': {
+            'init_command': "SET NAMES 'utf8mb4';SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
     }
 }
 

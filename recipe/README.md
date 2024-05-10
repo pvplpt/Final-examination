@@ -344,3 +344,90 @@ python3 manage.py migrate
 - Устанил ошибку: Не сохраняются фотографии при редактировании рецепта
 - Реализовал отключение случайных рецептов для тех зарегистрированных пользователей, которые решили следить за новыми рецептами. Для них выводятся последние добавленные рецепты.
 - Добавил страницу все рецепты
+
+## 2024-05-10
+
+### День 7
+
+- Продолжил тестирование реализованного Backend-функционала
+- Устранил ошибку: Не сохранется критерий поиска после возврата из детального просмотра
+- Начал подготовку к переносу проекта на сервер pythonanywhere.com
+- Зарегистрировался на сайте: [https://www.pythonanywhere.com](https://www.pythonanywhere.com)
+- Откючил режим дебага в файле проекта _settings.py_
+
+```
+DEBUG = False
+```
+
+- Добавил две константы для повышения безопасности работы с сессиями и с csrf токенами
+
+```
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+```
+
+- Изменил параметр SECRET_KEY
+
+```
+SECRET_KEY = os.getenv('SECRET_KEY')
+```
+
+- Добавил адрес сайта в список доступных хостов в файл _settings.py_ :
+
+```
+ALLOWED_HOSTS = ['pvplpt.pythonanywhere.com',]
+```
+
+- На сайте https://www.pythonanywhere.com инициализировал базу данных MySQL
+- Кликнул по pvplpt$default чтобы открыть консоль MySQL
+- Ввел команду для смены кодировки на UTF-8:
+
+```
+ALTER DATABASE pvplpt$default CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
+
+- Выключил консоль командой exit
+- Настроил подключение к MySQL в файле _settings.py_:
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pvplpt$default',
+        'USER': 'pvplpt',
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': 'pvplpt.mysql.pythonanywhere-services.com',
+        'OPTIONS': {
+            'init_command': "SET NAMES 'utf8mb4';SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+        },
+    }
+}
+```
+
+- Добавил в конец файла requirements.txt еще одну строку:
+
+```
+echo mysqlclient >> requirements.txt
+cat requirements.txt
+asgiref==3.8.1
+beautifulsoup4==4.12.3
+Django==5.0.4
+django-bootstrap4==24.3
+django-cleanup==8.1.0
+easy-thumbnails==2.8.5
+pillow==10.3.0
+python-dotenv==1.0.1
+soupsieve==2.5
+sqlparse==0.5.0
+typing_extensions==4.11.0
+mysqlclient
+```
+
+- Добавил файл README.md в папку /media/thumbnails/ чтобы перенести ее на сервер
+- Закоментировал #media/ в файле .gitignore чтобы залить папку /media/thumbnails/ на гитхаб
+- Отпраил код в удаленный репозиторий
+
+```
+
+```
