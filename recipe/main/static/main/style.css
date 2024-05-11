@@ -4,3 +4,8 @@
 img.main-image {
   width: 300px;
 }
+@media (max-width: 767px) {
+  .display-1 {
+    font-size: 4rem;
+  }
+}
